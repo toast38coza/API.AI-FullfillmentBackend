@@ -1,0 +1,11 @@
+version: "2"
+services:
+  web:
+    restart: on-failure:10
+    build: .
+    #command: gunicorn appointmentguru.wsgi:application -b :8000 --reload
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/bot
+    ports:
+      - 8001:8000

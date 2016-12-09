@@ -1,0 +1,8 @@
+[guruswarm]
+192.81.216.146 ansible_user=root ansible_python_interpreter=/usr/bin/python2.7
+
+[stage]
+#198.199.121.234 ansible_user=root ansible_python_interpreter=/usr/bin/python2.7
+
+#[localhost]
+#localhost ansible_connection=local

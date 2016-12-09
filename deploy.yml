@@ -1,0 +1,45 @@
+- hosts:
+    - guruswarm
+    - stage
+  vars:
+    github_branch: master
+  tasks:
+    - name: Create required directories
+      file:
+        path: "{{item}}"
+        state: directory
+      with_items:
+        - /var/code/
+    - name: Get the codes from github
+      git:
+        repo: git@github.com:toast38coza/API.AI-FullfillmentBackend.git
+        dest: /var/code/API.AI-FullfillmentBackend
+        accept_hostkey: yes
+        version: "{{github_branch}}"
+        force: yes
+      tags:
+        - quick
+        - django
+        - code
+        - docker
+    - name: Rebuild and run the code
+      shell: "{{item}}"
+      args:
+        chdir: /var/code/API.AI-FullfillmentBackend
+      with_items:
+        - "docker-compose build"
+        - "docker-compose up -d"
+        - "docker-compose restart"
+      tags:
+        - quick
+        - docker
+
+    - name: Run commands
+      shell: "docker-compose run --rm web {{item}}"
+      args:
+        chdir: /var/code/API.AI-FullfillmentBackend
+      with_items:
+        - python manage.py migrate
+      tags:
+        - quick
+        - django
